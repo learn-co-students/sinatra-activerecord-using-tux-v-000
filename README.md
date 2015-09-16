@@ -1,12 +1,5 @@
 #Using Tux in Siantra with ActiveRecord
 
-## Teacher Outline
-+ Tux is a console that has the entire environment loaded up
-+ You have access to the database
-+ Useful for sandboxing, testing associations, checking app.
-+ Prewritten code is a sinatra application with a few associations
-+ Use activerecord methods in tux (.all, .new, .save, .create, .first, etc)
-
 ## Objectives
 
 + Use Tux to test our Sinatra application
@@ -14,7 +7,7 @@
 
 ## Overview
 
-Sometimes, we want to test out our models and associations without building out the front-end of our application. It would be nice if we could test out our code in a console from the command line. Luckily, we can do this using a gem called `tux`. `tux` gives us a shell around our Sinatra application, meaning that we can access any part of it from the command line. Today, we'll be using tux to perform some basic CRUD actions on our models without building out any HTML.
+Sometimes, we want to test out our models and associations without building out the front-end of our application. For example, maybe we'd like to create a new user without building out a signup form. It would be nice if we could test out our code in a console from the command line. Luckily, we can do this using a gem called `tux`. `tux` gives us a shell around our Sinatra application, meaning that we can access any part of it from the command line. Today, we'll be using tux to perform some basic CRUD actions on our models without building out any HTML.
 
 
 Fork and clone this repository to get started. Run `bundle install` to install any needed gems, including `tux`! 
@@ -36,7 +29,7 @@ Loading development environment (Rack 1.3)
 >> 
 ```
 
-Look familiar? The `>>` lets us know that we're in a `tux` session. `tux` is a REPL, just like IRB or Pry. We can write any valid Ruby code here that we like. 
+Look familiar? The `>>` lets us know that we're in a `tux` session. `tux` is a REPL, just like IRB or Pry. We can write any valid Ruby code that we want. 
 
 ```bash
 >> 1 + 1
@@ -59,36 +52,54 @@ This is a great way to debug and test out code. To begin, let's see all of the u
 
 ```bash
 >> User.all
+```
+
+
+
+This returns an empty array. 
+
+```bash
+>> User.all
 D, [2015-09-16T11:09:35.822251 #14807] DEBUG -- :   User Load (0.2ms)  SELECT "users".* FROM "users"
 => #<ActiveRecord::Relation []>
 ```
-
-This returns an empty array. Let's go ahead and create a user. Create a user using the `.create` method.
+Let's go ahead and create a user. Create a user using the `.create` method.
 
 ```bash
 >> User.create(:fullname => "Ringo Starr", :username => "ringo123", :email => "ringo@beatles.com")
+```
+
+We can see the SQL that was fired by ActiveRecord's `create` method.
+
+```bash
 D, [2015-09-16T11:11:18.011233 #14807] DEBUG -- :    (0.1ms)  begin transaction
 D, [2015-09-16T11:11:18.027144 #14807] DEBUG -- :   SQL (0.6ms)  INSERT INTO "users" ("fullname", "username", "email") VALUES (?, ?, ?)  [["fullname", "Ringo Starr"], ["username", "ringo123"], ["email", "ringo@beatles.com"]]
 D, [2015-09-16T11:11:18.028915 #14807] DEBUG -- :    (1.1ms)  commit transaction
 => #<User id: 1, username: "ringo123", email: "ringo@beatles.com", fullname: "Ringo Starr">
->> 
 ```
 
-We can see the SQL that was fired by ActiveRecord's `create` method. Let's run `User.all` again. 
+ Let's run `User.all` again. 
 
 ```bash
 >> User.all
+```
+This outputs: 
+
+```bash
 D, [2015-09-16T11:12:52.031732 #14807] DEBUG -- :   User Load (0.3ms)  SELECT "users".* FROM "users"
 => #<ActiveRecord::Relation [#<User id: 1, username: "ringo123", email: "ringo@beatles.com", fullname: "Ringo Starr">]>
 ```
 
-Please note that we've actually added a row to our database. Later on, when we build out the views of our application, we've be able to log in using these credentials. Now that we have a user created, let's go ahead and create a post for him. First, let's load our user into a variable using the `.first` method. 
+We've added a row to our users table! Later on, when we build out the views of our application, we'll be able to log in using this user's credentials. Now that we have a user created, let's go ahead and create a post for him. First, let's load our user into a variable using the `.first` method. 
 
 ```bash
 >> ringo = User.first
+```
+We'll see the output and return value:
+
+```bash
 D, [2015-09-16T11:15:34.222795 #14807] DEBUG -- :   User Load (0.3ms)  SELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1
 => #<User id: 1, username: "ringo123", email: "ringo@beatles.com", fullname: "Ringo Starr">
->> 
 ```
 
 Now, let's make a new instance of our `Post` class using the `.new` method.
@@ -99,15 +110,22 @@ Now, let's make a new instance of our `Post` class using the `.new` method.
 >> 
 ```
 
-Notice that our post doesn't have an id yet. This is because it hasn't been saved to the database. Let's update the content, title, and user properties of our post and then save it to the database.
+Notice that our post doesn't have an id yet. This is because it hasn't been saved to the database. Before we save it, let's update our posts properties. First let's give it a title.
 
 ```bash
->> post = Post.new
-=> #<Post id: nil, content: nil, title: nil, user_id: nil>
 >> post.title = "A Tale of Two Cities"
 => "A Tale of Two Cities"
+```
+Next, let's give it some content.
+
+```bash
 >> post.content = "It was the best of times, it was the worst of times."
 => "It was the best of times, it was the worst of times."
+```
+
+Finally, let's assign the user it a user and save it to our database.
+
+```bash
 >> post.user = ringo
 => #<User id: 1, username: "ringo123", email: "ringo@beatles.com", fullname: "Ringo Starr">
 >> post.save
@@ -115,13 +133,16 @@ D, [2015-09-16T11:18:32.422498 #14807] DEBUG -- :    (0.1ms)  begin transaction
 D, [2015-09-16T11:18:32.424797 #14807] DEBUG -- :   SQL (0.7ms)  INSERT INTO "posts" ("title", "content", "user_id") VALUES (?, ?, ?)  [["title", "A Tale of Two Cities"], ["content", "It was the best of times, it was the worst of times."], ["user_id", 1]]
 D, [2015-09-16T11:18:32.434429 #14807] DEBUG -- :    (9.0ms)  commit transaction
 => true
-
 ```
 
 Now, we can ask `ringo` for all of the `posts` that belong to him.
 
 ```bash
 >> ringo.posts
+```
+returns:
+
+```bash
 D, [2015-09-16T11:19:27.761086 #14807] DEBUG -- :   Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?  [["user_id", 1]]
 => #<ActiveRecord::Associations::CollectionProxy [#<Post id: 1, content: "It was the best of times, it was the worst of time...", title: "A Tale of Two Cities", user_id: 1>]>
 ```
@@ -146,9 +167,6 @@ D, [2015-09-16T11:25:01.562801 #14807] DEBUG -- :    (8.8ms)  commit transaction
 => [#<Post id: 1, content: "It was the best of times, it was the worst of time...", title: "A Tale of Two Cities", user_id: 1>]
 ```
 
-## Conclusion
-
-Tux is a fantastic resource for debugging your application and testing out values of the models in your database.
 
 ## Resources
 

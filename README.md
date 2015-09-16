@@ -6,3 +6,8 @@
 + Useful for sandboxing, testing associations, checking app.
 + Prewritten code is a sinatra application with a few associations
 + Use activerecord methods in tux (.all, .new, .save, .create, .first, etc)
+
+## Objectives
+
++ Use Tux to test our Sinatra application
++ Understand that Tux is simply pre-loading our development environment. 

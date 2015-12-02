@@ -172,3 +172,5 @@ D, [2015-09-16T11:25:01.562801 #14807] DEBUG -- :    (8.8ms)  commit transaction
 
 + [Tux Documentation](https://github.com/cldwalker/tux)
 
+
+<a href='https://learn.co/lessons/sinatra-activerecord-using-tux' data-visibility='hidden'>View this lesson on Learn.co</a>

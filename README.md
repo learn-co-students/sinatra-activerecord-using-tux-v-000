@@ -11,6 +11,18 @@
 
 Tux is an incredible Ruby gem that let's you access your database and perform all CRUD operations on it through the terminal. It also loads a full environment in the console that allows you to see all routes and views. Primarily, you'll use Tux to make sure your database is set up properly, play around with Ruby objects, and make sure your ActiveRecord associations are working properly.
 
+In this repo there is a simple sinatra app with a `User` model and a method called `say_name`. I want to test that the `say_name` method works.
+
+In order to do that, I need to open up IRB in terminal and require the file `models/user.rb`:
+
+![require models/user.rb](https://s3.amazonaws.com/learn-verified/Screen+Shot+2015-11-19+at+9.46.10+AM.png)
+
+But then I get an error that it doesn't recognize `ActiveRecord`. But when you try to require the ActiveRecord gem, you get the following:
+
+![require activerecord](https://s3.amazonaws.com/learn-verified/require-activerecord.png)
+
+So suddenly, trying to test this method is a big big mess. We keep running into issues. This is why Tux exists. By using the Tux gem, we can easily create objects, and test our methods to manipulate those objects.
+
 ## Setup
 
 Setting up Tux is fairly simple. All you need to do is include it in your Gemfile and run `bundle install` in terminal.

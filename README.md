@@ -1,4 +1,4 @@
-#Using Tux in Siantra with ActiveRecord
+#Using Tux in Sinatra with ActiveRecord
 
 ## Objectives
 

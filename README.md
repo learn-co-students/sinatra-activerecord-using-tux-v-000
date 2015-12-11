@@ -1,4 +1,4 @@
-#Using Tux in Siantra with ActiveRecord
+#Using Tux in Sinatra with ActiveRecord
 
 ## Teacher Outline
 + Tux is a console that has the entire environment loaded up

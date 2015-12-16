@@ -1,88 +1,176 @@
 #Using Tux in Sinatra with ActiveRecord
 
-## Teacher Outline
-+ Tux is a console that has the entire environment loaded up
-+ You have access to the database
-+ Useful for sandboxing, testing associations, checking app.
-+ Prewritten code is a sinatra application with a few associations
-+ Use activerecord methods in tux (.all, .new, .save, .create, .first, etc)
+## Objectives
 
-## What Is Tux
++ Use Tux to test our Sinatra application
++ Practice using Tux to setup our models and associations
 
-Tux is an incredible Ruby gem that let's you access your database and perform all CRUD operations on it through the terminal. It also loads a full environment in the console that allows you to see all routes and views. Primarily, you'll use Tux to make sure your database is set up properly, play around with Ruby objects, and make sure your ActiveRecord associations are working properly.
+## Overview
 
-In this repo there is a simple sinatra app with a `User` model and a method called `say_name`. I want to test that the `say_name` method works.
+Sometimes, we want to test out our models and associations without building out the front-end of our application. For example, maybe we'd like to create a new user without building out a signup form. It would be nice if we could test out our code in a console from the command line. Luckily, we can do this using a gem called `tux`. `tux` gives us a shell around our Sinatra application, meaning that we can access any part of it from the command line. Today, we'll be using tux to perform some basic CRUD actions on our models without building out any HTML.
 
-In order to do that, I need to open up IRB in terminal and require the file `models/user.rb`:
 
-![require models/user.rb](https://s3.amazonaws.com/learn-verified/Screen+Shot+2015-11-19+at+9.46.10+AM.png)
+Fork and clone this repository to get started. Run `bundle install` to install any needed gems, including `tux`! 
 
-But then I get an error that it doesn't recognize `ActiveRecord`. But when you try to require the ActiveRecord gem, you get the following:
+## Starter Code
 
-![require activerecord](https://s3.amazonaws.com/learn-verified/require-activerecord.png)
+We've included two migration files, `20150916143412_create_posts.rb` and `20150916143408_create_users.rb`, which will create tables for `posts` and `users`, respectively. We've also created corresponding models inside of the `models` directory. A post belongs to a user, and a user has many posts. A post has three attributes: `title`, `content`, and `user_id`. A user has `fullname`, `username`, and `email`. 
 
-So suddenly, trying to test this method is a big big mess. We keep running into issues. This is why Tux exists. By using the Tux gem, we can easily create objects, and test our methods to manipulate those objects.
-
-## Setup
-
-Setting up Tux is fairly simple. All you need to do is include it in your Gemfile and run `bundle install` in terminal.
+Run `rake db:migrate` to create your database.
 
 ## Using Tux
 
-We've got a full Sinatra application with a single `User` class set up. We've already created the migration for you, but make sure you actually run the migration to create the user table.
+To get started, open your terminal, navigate to the root of this directory, and run `tux`. You should see the following output:
 
-Next, it's time to use Tux. In terminal in the directory of this walk-through enter `tux`. You should see something like this:
-
-<img src="https://s3.amazonaws.com/learn-verified/tux.png">
-
-The tux console has now loaded. Regular terminal commands won't work at this point, but you can use Ruby and ActiveRecord methods.
-
-### Create
-
-Just like in our controller action, we can create a user.
-
-```ruby
-user = User.create(:name => "Tricia", :email => "tricia@test.com", :fav_icecream => "mint chocolate chip")
+```bash
+tux
+D, [2015-09-16T11:00:45.728714 #14788] DEBUG -- :   ActiveRecord::SchemaMigration Load (0.2ms)  SELECT "schema_migrations".* FROM "schema_migrations"
+Loading development environment (Rack 1.3)
+>> 
 ```
 
-Or:
+Look familiar? The `>>` lets us know that we're in a `tux` session. `tux` is a REPL, just like IRB or Pry. We can write any valid Ruby code that we want. 
 
-```ruby
-user = User.new
-user.name = "Beth"
-user.email = "beth@beth.com"
-user.fav_icecream = "rocky road"
-user.save
+```bash
+>> 1 + 1
+=> 2
+>> puts "I love Ruby!"
+I love Ruby!
+=> nil
 ```
 
-### Edit
+Unlike IRB or Pry, however, tux has preloaded our entire development environment into this console session. This means that we have access to any methods or classes that we can access from our ApplicationController, including our database. For example:
 
-We can edit a user that's already been saved to the database. Let's edit the first user.
-
-```ruby
-user = User.first
-user.name = "tricia yearwood"
-user.save
+```bash
+>> User
+=> User(id: integer, username: string, email: string, fullname: string)
+>> Post
+=> Post(id: integer, content: string, title: string, user_id: integer)
 ```
 
-### Delete
+This is a great way to debug and test out code. To begin, let's see all of the users that we've created so far. In your `tux` session, type `User.all`.
 
-Now let's delete the first user:
-
-```ruby
-user = User.first
-user.delete
+```bash
+>> User.all
 ```
 
-### Search for Specific Users
 
-All the `find` methods work in Tux too!
 
-```ruby
-user = User.find_by_id(2)
-user = User.find_by(:name => "Beth")
-user = User.first
-user = User.last
+This returns an empty array. 
+
+```bash
+>> User.all
+D, [2015-09-16T11:09:35.822251 #14807] DEBUG -- :   User Load (0.2ms)  SELECT "users".* FROM "users"
+=> #<ActiveRecord::Relation []>
+```
+Let's go ahead and create a user. Create a user using the `.create` method.
+
+```bash
+>> User.create(:fullname => "Ringo Starr", :username => "ringo123", :email => "ringo@beatles.com")
 ```
 
-Once you're done, just exit Tux by entering `exit`.
+We can see the SQL that was fired by ActiveRecord's `create` method.
+
+```bash
+D, [2015-09-16T11:11:18.011233 #14807] DEBUG -- :    (0.1ms)  begin transaction
+D, [2015-09-16T11:11:18.027144 #14807] DEBUG -- :   SQL (0.6ms)  INSERT INTO "users" ("fullname", "username", "email") VALUES (?, ?, ?)  [["fullname", "Ringo Starr"], ["username", "ringo123"], ["email", "ringo@beatles.com"]]
+D, [2015-09-16T11:11:18.028915 #14807] DEBUG -- :    (1.1ms)  commit transaction
+=> #<User id: 1, username: "ringo123", email: "ringo@beatles.com", fullname: "Ringo Starr">
+```
+
+ Let's run `User.all` again. 
+
+```bash
+>> User.all
+```
+This outputs: 
+
+```bash
+D, [2015-09-16T11:12:52.031732 #14807] DEBUG -- :   User Load (0.3ms)  SELECT "users".* FROM "users"
+=> #<ActiveRecord::Relation [#<User id: 1, username: "ringo123", email: "ringo@beatles.com", fullname: "Ringo Starr">]>
+```
+
+We've added a row to our users table! Later on, when we build out the views of our application, we'll be able to log in using this user's credentials. Now that we have a user created, let's go ahead and create a post for him. First, let's load our user into a variable using the `.first` method. 
+
+```bash
+>> ringo = User.first
+```
+We'll see the output and return value:
+
+```bash
+D, [2015-09-16T11:15:34.222795 #14807] DEBUG -- :   User Load (0.3ms)  SELECT  "users".* FROM "users"  ORDER BY "users"."id" ASC LIMIT 1
+=> #<User id: 1, username: "ringo123", email: "ringo@beatles.com", fullname: "Ringo Starr">
+```
+
+Now, let's make a new instance of our `Post` class using the `.new` method.
+
+```bash
+>> post = Post.new
+=> #<Post id: nil, content: nil, title: nil, user_id: nil>
+>> 
+```
+
+Notice that our post doesn't have an id yet. This is because it hasn't been saved to the database. Before we save it, let's update our posts properties. First let's give it a title.
+
+```bash
+>> post.title = "A Tale of Two Cities"
+=> "A Tale of Two Cities"
+```
+Next, let's give it some content.
+
+```bash
+>> post.content = "It was the best of times, it was the worst of times."
+=> "It was the best of times, it was the worst of times."
+```
+
+Finally, let's assign the user it a user and save it to our database.
+
+```bash
+>> post.user = ringo
+=> #<User id: 1, username: "ringo123", email: "ringo@beatles.com", fullname: "Ringo Starr">
+>> post.save
+D, [2015-09-16T11:18:32.422498 #14807] DEBUG -- :    (0.1ms)  begin transaction
+D, [2015-09-16T11:18:32.424797 #14807] DEBUG -- :   SQL (0.7ms)  INSERT INTO "posts" ("title", "content", "user_id") VALUES (?, ?, ?)  [["title", "A Tale of Two Cities"], ["content", "It was the best of times, it was the worst of times."], ["user_id", 1]]
+D, [2015-09-16T11:18:32.434429 #14807] DEBUG -- :    (9.0ms)  commit transaction
+=> true
+```
+
+Now, we can ask `ringo` for all of the `posts` that belong to him.
+
+```bash
+>> ringo.posts
+```
+returns:
+
+```bash
+D, [2015-09-16T11:19:27.761086 #14807] DEBUG -- :   Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" = ?  [["user_id", 1]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Post id: 1, content: "It was the best of times, it was the worst of time...", title: "A Tale of Two Cities", user_id: 1>]>
+```
+
+Remember that you have access to all of ActiveRecord's awesome methods here. Let's pretend that we have some posts in our database that don't have users associated. This could cause certain parts of our application to break. We could find those by doing:
+
+```bash
+>> Post.where(:user_id => nil)
+D, [2015-09-16T11:24:24.306142 #14807] DEBUG -- :   Post Load (0.2ms)  SELECT "posts".* FROM "posts" WHERE "posts"."user_id" IS NULL
+=> #<ActiveRecord::Relation []>
+
+```
+
+If we wanted to clear our database and start from scratch, we could simply do `Post.destroy_all`:
+
+```bash
+>> Post.destroy_all
+D, [2015-09-16T11:25:01.550687 #14807] DEBUG -- :   Post Load (0.2ms)  SELECT "posts".* FROM "posts"
+D, [2015-09-16T11:25:01.551192 #14807] DEBUG -- :    (0.1ms)  begin transaction
+D, [2015-09-16T11:25:01.553719 #14807] DEBUG -- :   SQL (1.5ms)  DELETE FROM "posts" WHERE "posts"."id" = ?  [["id", 1]]
+D, [2015-09-16T11:25:01.562801 #14807] DEBUG -- :    (8.8ms)  commit transaction
+=> [#<Post id: 1, content: "It was the best of times, it was the worst of time...", title: "A Tale of Two Cities", user_id: 1>]
+```
+
+
+## Resources
+
++ [Tux Documentation](https://github.com/cldwalker/tux)
+
+
+<a href='https://learn.co/lessons/sinatra-activerecord-using-tux' data-visibility='hidden'>View this lesson on Learn.co</a>

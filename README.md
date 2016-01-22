@@ -2,7 +2,7 @@
 
 ## What Is Tux
 
-Tux is an incredible Ruby gem that let's you access your database and perform all CRUD operations on it through the terminal. It also loads a full environment in the console that allows you to see all routes and views. Primarily, you'll use Tux to make sure your database is set up properly, play around with Ruby objects, and make sure your ActiveRecord associations are working properly.
+Tux is an incredible Ruby gem that lets you access your database and perform all CRUD operations on it through the terminal. It also loads a full environment in the console that allows you to see all routes and views. Primarily, you'll use Tux to make sure your database is set up properly, play around with Ruby objects, and make sure your ActiveRecord associations are working properly.
 
 In this repo there is a simple sinatra app with a `User` model and a method called `say_name`. I want to test that the `say_name` method works.
 

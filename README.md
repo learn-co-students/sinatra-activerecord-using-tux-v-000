@@ -79,3 +79,5 @@ user = User.last
 ```
 
 Once you're done, just exit Tux by entering `exit`.
+
+<p data-visibility='hidden'>View <a href='https://learn.co/lessons/sinatra-activerecord-using-tux' title='Using Tux in Sinatra with ActiveRecord'>Using Tux in Sinatra with ActiveRecord</a> on Learn.co and start learning to code for free.</p>

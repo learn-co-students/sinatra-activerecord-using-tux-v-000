@@ -4,17 +4,18 @@
 
 Tux is an incredible Ruby gem that lets you access your database and perform all CRUD operations on it through the terminal. It also loads a full environment in the console that allows you to see all routes and views. Primarily, you'll use Tux to make sure your database is set up properly, play around with Ruby objects, and make sure your ActiveRecord associations are working properly.
 
-In this repo there is a simple sinatra app with a `User` model and a method called `say_name`. I want to test that the `say_name` method works.
+For example, in this repo there is a simple Sinatra app with a `User` model and a method called `say_name`. I want to test that the `say_name` method works. Wouldn't it be great if we could enter into some sort of playground environment where we can test out our code?
 
-In order to do that, I need to open up IRB in terminal and require the file `models/user.rb`:
+In the past, we've used IRB for just that. Let's try dropping into IRB and testing out our code. 
 
-![require models/user.rb](https://s3.amazonaws.com/learn-verified/Screen+Shot+2015-11-19+at+9.46.10+AM.png)
+Open up IRB in terminal and require the file `models/user.rb`:
 
-But then I get an error that it doesn't recognize `ActiveRecord`. But when you try to require the ActiveRecord gem, you get the following:
+![require models/user.rb](http://readme-pics.s3.amazonaws.com/sinatra-tux-irb-error.png)
 
-![require activerecord](https://s3.amazonaws.com/learn-verified/require-activerecord.png)
+Oh no! We an error that it doesn't recognize `ActiveRecord`. Let's try to require the ActiveRecord gem:
+![require activerecord](http://readme-pics.s3.amazonaws.com/sinatra-tux-irb-error2.png)
 
-So suddenly, trying to test this method is a big big mess. We keep running into issues. This is why Tux exists. By using the Tux gem, we can easily create objects, and test our methods to manipulate those objects.
+Tying to test our our `User` model and methods in IRB is a big big mess. We keep running into issues. This is why Tux exists. By using the Tux gem, we can easily create objects, and test our methods to manipulate those objects.
 
 ## Setup
 

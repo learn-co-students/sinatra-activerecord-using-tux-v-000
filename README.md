@@ -12,7 +12,7 @@ Open up IRB in terminal and require the file `models/user.rb`:
 
 ![require models/user.rb](http://readme-pics.s3.amazonaws.com/sinatra-tux-irb-error.png)
 
-Oh no! We an error that it doesn't recognize `ActiveRecord`. Let's try to require the ActiveRecord gem:
+Oh no! We get an error that it doesn't recognize `ActiveRecord`. Let's try to require the ActiveRecord gem:
 ![require activerecord](http://readme-pics.s3.amazonaws.com/sinatra-tux-irb-error2.png)
 
 Trying to test our `User` model and methods in IRB is a big big mess. We keep running into issues. This is why Tux exists. By using the Tux gem, we can easily create objects, and test our methods to manipulate those objects.

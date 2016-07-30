@@ -36,7 +36,7 @@ The tux console has now loaded. Regular terminal commands won't work at this poi
 Just like in our controller action, we can create a user.
 
 ```ruby
-user = User.create(:name => "Tricia", :email => "tricia@test.com", :fav_icecream => "mint chocolate chip")
+user = User.create(:name => "Trisha", :email => "trisha@test.com", :fav_icecream => "mint chocolate chip")
 ```
 
 Or:
@@ -55,7 +55,7 @@ We can edit a user that's already been saved to the database. Let's edit the fir
 
 ```ruby
 user = User.first
-user.name = "tricia yearwood"
+user.name = "Trisha Yearwood"
 user.save
 ```
 
@@ -82,5 +82,3 @@ user = User.last
 Once you're done, just exit Tux by entering `exit`.
 
 <p data-visibility='hidden'>View <a href='https://learn.co/lessons/sinatra-activerecord-using-tux' title='Using Tux in Sinatra with ActiveRecord'>Using Tux in Sinatra with ActiveRecord</a> on Learn.co and start learning to code for free.</p>
-
-<p class='util--hide'>View <a href='https://learn.co/lessons/sinatra-activerecord-using-tux'>Using Tux in Sinatra with ActiveRecord</a> on Learn.co and start learning to code for free.</p>

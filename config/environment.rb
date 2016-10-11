@@ -10,3 +10,5 @@ ActiveRecord::Base.establish_connection(
 
 require './app'
 require_all 'models'
+
+#Setting up the SINATRA_ENV for the app to run

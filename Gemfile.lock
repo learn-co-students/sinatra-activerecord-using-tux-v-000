@@ -26,6 +26,7 @@ GEM
     i18n (0.7.0)
     method_source (0.8.2)
     minitest (5.9.0)
+    pg (0.19.0)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -85,6 +86,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   database_cleaner!
+  pg
   pry
   pry-nav
   rack-test
@@ -97,4 +99,4 @@ DEPENDENCIES
   tux
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

@@ -4,3 +4,4 @@ class User < ActiveRecord::Base
     "my name is #{self.name}"
   end
 end
+#

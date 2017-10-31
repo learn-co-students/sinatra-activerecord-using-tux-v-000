@@ -19,6 +19,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.0.0)
+    awesome_print (1.8.0)
     bond (0.5.1)
     coderay (1.1.1)
     concurrent-ruby (1.0.2)
@@ -84,6 +85,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  awesome_print
   database_cleaner!
   pry
   pry-nav
@@ -97,4 +99,4 @@ DEPENDENCIES
   tux
 
 BUNDLED WITH
-   1.12.5
+   1.14.6

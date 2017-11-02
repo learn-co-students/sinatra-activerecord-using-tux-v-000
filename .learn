@@ -1,7 +1,7 @@
-tags: 
- - sinatra
- - tux
+tags:
+  - tux
+  - sinatra
+  - activerecord
 languages:
   - ruby
-resources:
- - 0
+resources: 1

@@ -10,3 +10,7 @@ ActiveRecord::Base.establish_connection(
 
 require './app'
 require_all 'models'
+
+configure :development do
+  set :database, 'sqlite3:db/users.db'
+end

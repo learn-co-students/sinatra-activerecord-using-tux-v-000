@@ -87,6 +87,7 @@ DEPENDENCIES
   database_cleaner!
   pry
   pry-nav
+  rack (= 1.6.4)
   rack-test
   rake
   require_all
@@ -97,4 +98,4 @@ DEPENDENCIES
   tux
 
 BUNDLED WITH
-   1.12.5
+   1.16.3

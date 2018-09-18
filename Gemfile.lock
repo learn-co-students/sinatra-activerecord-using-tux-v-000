@@ -83,7 +83,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord
+  activerecord (= 5.0.0)
   database_cleaner!
   pry
   pry-nav
@@ -97,4 +97,4 @@ DEPENDENCIES
   tux
 
 BUNDLED WITH
-   1.12.5
+   1.16.4

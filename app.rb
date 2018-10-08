@@ -4,4 +4,6 @@ class App < Sinatra::Base
   get '/' do 
     :index
   end
+
+  puts 'HIHOHOIHO'
 end
